@@ -1,5 +1,10 @@
 import { readTodos, writeTodos } from "./storage.js";
 
+
+function helloThere() {
+  console.log("Hello There");
+}
+
 async function loadTodos() {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/todos/')
@@ -97,6 +102,8 @@ async function init() {
         todosTag.innerHTML = ""
         todosTag.innerHTML = "Error: was not able to load todos."
     }
+
+    helloThere()
 }
 
 async function handleSubmit(event) {
