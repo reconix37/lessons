@@ -95,7 +95,7 @@ async function init() {
     } catch (error) {
         const todosTag = document.getElementById("todos")
         todosTag.innerHTML = ""
-        todosTag.innerHTML = "error"
+        todosTag.innerHTML = "Error: was not able to load todos."
     }
 }
 
