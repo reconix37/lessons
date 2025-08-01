@@ -1,0 +1,29 @@
+
+/* styling for navigation menu */
+nav ul{
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* styling for todos */
+main ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap:.75rem
+}
+
+/* styling for todo item */
+main ul li, main ul li label {
+  display: flex;
+  gap: 1.25rem;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+main ul li label {
+  gap: .75rem;
+}
