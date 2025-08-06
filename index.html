@@ -7,7 +7,14 @@
     <title>Vite + TS</title>
   </head>
   <body>
-    <div id="app"></div>
+    <main>
+      <h1>To Do</h1>
+        <form id="create-todo">
+            <input aria-label="a" type="text" name="title"/>
+            <button type="submit">Create</button>
+        </form>
+      <ul id="todos"></ul>
+    </main>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

@@ -1,24 +1,48 @@
 import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import {createTodoList} from "./views/todoListView";
+import {addTodoItem} from "./views/todoItemView";
+import {loadTodos} from "./services/todosService";
+import {readTodos, writeTodos} from "./services/storageService";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+async function init() {
+    const createFormTag = document.querySelector<HTMLFormElement>("#create-todo") as HTMLFormElement
+    createFormTag.onsubmit = handleSubmit
+    try {
+        const todos = await loadTodos()
+        createTodoList(todos)
+    } catch (error) {
+        const todosTag = document.querySelector<HTMLUListElement>('#todos')
+        if (!todosTag) throw new Error("Todos container not found")
+        todosTag.innerHTML = ""
+        todosTag.innerHTML = "error"
+    }
+}
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+async function handleSubmit(event: SubmitEvent): Promise<void> {
+    event.preventDefault()
+    const formData = new FormData(event.target as HTMLFormElement)
+    const rawData = { ...Object.fromEntries(formData), completed: false, userId: 1 }
+    const body = JSON.stringify(rawData)
+
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/todos/', {
+            method: 'POST',
+            body,
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+        const newTodo = await response.json()
+        const currentTodos = readTodos() || []
+        const updTodos = [newTodo, ...currentTodos]
+        writeTodos(updTodos)
+        addTodoItem(newTodo)
+    } catch (error) {
+        const todosTag = document.querySelector<HTMLUListElement>('#todos')
+        if (!todosTag) throw new Error("Todos container not found")
+        todosTag.innerHTML = ""
+        todosTag.innerHTML = "error"
+    }
+}
+
+init()
