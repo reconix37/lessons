@@ -1,6 +1,7 @@
 import { updateTodoItem, deleteTodoItem } from "../services/todosService";
+import type { Todo } from "../types";
 
-export function addTodoItem(todo: any): HTMLLIElement {
+export function addTodoItem(todo: Todo): HTMLLIElement {
 
     const todosTag = document.querySelector<HTMLUListElement>('#todos')
     if (!todosTag) throw new Error("Todos container not found")

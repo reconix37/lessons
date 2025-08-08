@@ -11,8 +11,7 @@ async function init() {
         const todos = await loadTodos()
         createTodoList(todos)
     } catch (error) {
-        const todosTag = document.querySelector<HTMLUListElement>('#todos')
-        if (!todosTag) throw new Error("Todos container not found")
+        const todosTag = document.querySelector<HTMLUListElement>('#todos') as HTMLUListElement
         todosTag.innerHTML = ""
         todosTag.innerHTML = "error"
     }
@@ -33,7 +32,7 @@ async function handleSubmit(event: SubmitEvent): Promise<void> {
             }
         })
         const newTodo = await response.json()
-        const currentTodos = readTodos() || []
+        const currentTodos = readTodos()
         const updTodos = [newTodo, ...currentTodos]
         writeTodos(updTodos)
         addTodoItem(newTodo)
